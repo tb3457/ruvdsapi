@@ -7,17 +7,24 @@ import (
 
 var configCmd = NewCmd()
 
+func usage() {
+	fmt.Fprintf(os.Stderr, "Your command not found. But you can use this sub-cmd:\n")
+	for name := range configCmd.cmd {
+		fmt.Fprintf(os.Stderr, "%s\n", name)
+	}
+	os.Exit(1)
+}
+
 var configHandler = func(args []string) error {
 	if len(args) > 0 {
 		arg := args[0]
 		if handler, ok := configCmd.cmd[arg]; ok {
-			fmt.Fprintf(os.Stderr, "Looking for sub-handler")
 			handler(args[1:])
 		} else {
-			fmt.Fprintf(os.Stderr, "Looking for action")
+			usage()
 		}
 	} else {
-		fmt.Fprintf(os.Stderr, "aaaaa")
+		usage()
 	}
 	return nil
 }

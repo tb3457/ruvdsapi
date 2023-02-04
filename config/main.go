@@ -29,6 +29,18 @@ type Config struct {
 }
 
 func NewConfig() Config {
+	//first, lets check environment
+	var cnf Config
+	if username, ok := os.LookupEnv("RUVDS_USERNAME"); ok {
+		if password, ok := os.LookupEnv("RUVDS_PASSWORD"); ok {
+			if apikey, ok := os.LookupEnv("RUVDS_KEY"); ok {
+				cnf.ApiKey = apikey
+				cnf.Password = password
+				cnf.Username = username
+				return cnf
+			}
+		}
+	}
 	var err error
 	var handler *os.File
 	err = configdir.MakePath(confDir)
@@ -43,7 +55,6 @@ func NewConfig() Config {
 		panic(err)
 	}
 	defer handler.Close()
-	var cnf Config
 	decoder := json.NewDecoder(handler)
 	decoder.Decode(&cnf)
 	return cnf

@@ -29,7 +29,7 @@ func Exec() {
 		if handler, ok := rootCmd.cmd[cliArgs[0]]; ok {
 			handler(cliArgs[1:])
 		} else {
-			fmt.Fprintf(os.Stderr, "Command line argument not recognized")
+			fmt.Fprintf(os.Stderr, "Command line argument not recognized\n")
 		}
 	}
 }
